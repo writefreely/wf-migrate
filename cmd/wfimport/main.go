@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/howeyc/gopass"
 	"github.com/writeas/go-writeas"
-	"github.com/writeas/wf-import"
+	"github.com/writeas/wf-migrate"
 	"io/ioutil"
 	"os"
 )
@@ -67,7 +67,7 @@ func main() {
 	}
 	fmt.Print("OK\n")
 
-	imp := wfimport.Import{}
+	imp := wfmigrate.Import{}
 
 	fmt.Print("Parsing file...")
 	err = json.Unmarshal(content, &imp)
@@ -109,7 +109,7 @@ func main() {
 		// Create posts
 		for _, p := range *coll.Posts {
 			fmt.Printf("Creating post %s...", p.Slug)
-			_, err = wfimport.CreatePost(cl, p, coll.Alias)
+			_, err = wfmigrate.CreatePost(cl, p, coll.Alias)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "error: %v\n", err)
 				continue
@@ -121,7 +121,7 @@ func main() {
 	// Create anonymous / draft posts
 	for _, p := range imp.Posts {
 		fmt.Printf("Creating draft post from %s...", p.ID)
-		_, err = wfimport.CreatePost(cl, p, "")
+		_, err = wfmigrate.CreatePost(cl, p, "")
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error: %v\n", err)
 			continue

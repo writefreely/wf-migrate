@@ -1,4 +1,4 @@
-package wfimport
+package wfmigrate
 
 import "github.com/writeas/go-writeas"
 
