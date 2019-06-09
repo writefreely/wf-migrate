@@ -57,6 +57,19 @@ func main() {
 		fmt.Print("OK\n")
 	}()
 
+	// Get user's current collections
+	fmt.Print("Getting your collections...")
+	colls, err := cl.GetUserCollections()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error %s: %v\n", fn, err)
+		os.Exit(1)
+	}
+	fmt.Print("OK\n")
+	userColls := map[string]bool{}
+	for _, c := range *colls {
+		userColls[c.Alias] = true
+	}
+
 	// Read file contents
 	// TODO: validate
 	fmt.Print("Reading file...")
@@ -89,22 +102,26 @@ func main() {
 		}
 		fmt.Print("\n")
 
-		fmt.Printf("Creating collection %s...", coll.Alias)
-		_, err = cl.CreateCollection(&writeas.CollectionParams{
-			Alias:       coll.Alias,
-			Title:       coll.Title,
-			Description: coll.Description,
-			// TODO:
-			//Stylesheet:  coll.Stylesheet,
-			//Public: coll.Public,
-		})
-		if err != nil {
-			// TODO: handle alias collisions
-			// TODO: handle hitting collection allowance limit
-			fmt.Fprintf(os.Stderr, "error: %v\n", err)
-			continue
+		if _, ok := userColls[coll.Alias]; ok {
+			fmtln("Adding to your existing collection %s.", coll.Alias)
+		} else {
+			fmt.Printf("Creating collection %s...", coll.Alias)
+			_, err = cl.CreateCollection(&writeas.CollectionParams{
+				Alias:       coll.Alias,
+				Title:       coll.Title,
+				Description: coll.Description,
+				// TODO:
+				//Stylesheet:  coll.Stylesheet,
+				//Public: coll.Public,
+			})
+			if err != nil {
+				// TODO: handle alias collisions
+				// TODO: handle hitting collection allowance limit
+				fmt.Fprintf(os.Stderr, "error: %v\n", err)
+				continue
+			}
+			fmt.Print("OK\n")
 		}
-		fmt.Print("OK\n")
 
 		// Create posts
 		for _, p := range *coll.Posts {
