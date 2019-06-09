@@ -14,7 +14,7 @@ go get github.com/writeas/wf-migrate/cmd/wfimport
 
 `wfimport` takes a username `-u`, optional WriteFreely instance hostname `-h`, and the filename of the JSON data you want to import.
 
-By default, `wfimport` publishes posts to Write.as:
+By default, `wfimport` publishes posts to [Write.as](https://write.as):
 
 ```
 wfimport -u username exported-data.json
