@@ -109,17 +109,7 @@ func main() {
 		// Create posts
 		for _, p := range *coll.Posts {
 			fmt.Printf("Creating post %s...", p.Slug)
-			_, err = cl.CreatePost(&writeas.PostParams{
-				Slug:       p.Slug,
-				Title:      p.Title,
-				Content:    p.Content,
-				Font:       p.Font,
-				Language:   p.Language,
-				IsRTL:      p.RTL,
-				Created:    &p.Created,
-				Updated:    &p.Updated,
-				Collection: coll.Alias,
-			})
+			_, err = wfimport.CreatePost(cl, p, coll.Alias)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "error: %v\n", err)
 				continue
@@ -131,15 +121,7 @@ func main() {
 	// Create anonymous / draft posts
 	for _, p := range imp.Posts {
 		fmt.Printf("Creating draft post from %s...", p.ID)
-		_, err = cl.CreatePost(&writeas.PostParams{
-			Title:    p.Title,
-			Content:  p.Content,
-			Font:     p.Font,
-			Language: p.Language,
-			IsRTL:    p.RTL,
-			Created:  &p.Created,
-			Updated:  &p.Updated,
-		})
+		_, err = wfimport.CreatePost(cl, p, "")
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error: %v\n", err)
 			continue
