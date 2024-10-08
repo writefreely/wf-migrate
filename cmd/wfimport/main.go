@@ -5,8 +5,8 @@ import (
 	"flag"
 	"fmt"
 	"github.com/howeyc/gopass"
-	"github.com/writeas/go-writeas"
-	"github.com/writeas/wf-migrate"
+	"github.com/writeas/go-writeas/v2"
+	"github.com/writefreely/wf-migrate"
 	"io/ioutil"
 	"os"
 )

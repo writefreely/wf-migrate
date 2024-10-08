@@ -1,6 +1,6 @@
 package wfmigrate
 
-import "github.com/writeas/go-writeas"
+import "github.com/writeas/go-writeas/v2"
 
 type Import struct {
 	writeas.User
